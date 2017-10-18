@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name:     Custom Boilerplate
+ * Plugin Name:     Bonds
  * Plugin URI:      PLUGIN SITE HERE
- * Description:     A boilerplate plugin with customizable post types and metabox fields.
+ * Description:     A bond listing / view plugin based on custom-boilerplate: A boilerplate plugin with customizable post types and metabox fields.
  * Author:          Revolt Media
  * Author URI:      https://www.revoltmedia.com/wordpress/custom-boilerplate
  * Text Domain:     custom-boilerplate
