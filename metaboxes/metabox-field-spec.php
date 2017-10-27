@@ -21,9 +21,9 @@ $custom_boilerplate_first_metabox_field_spec = Array (
 	2 => Array (
 		'slug' => 'date',
 		'label' => 'Date:',
-		'type' => 'date',
+		'type' => 'text',
 		'repeating' => false,
-		'placeholder' => false
+		'placeholder' => '1900'
 	),
 	// 3 => Array (
 	// 	'slug' => 'framed',

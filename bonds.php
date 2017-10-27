@@ -13,7 +13,7 @@
  */
 require('post-types/item-post-type.php');
 require('taxonomies/document-type.php');
-require('taxonomies/provenance.php');
+require('taxonomies/signature.php');
 require('taxonomies/company.php');
 require('taxonomies/collection.php');
 
