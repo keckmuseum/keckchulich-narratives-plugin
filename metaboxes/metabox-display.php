@@ -106,7 +106,7 @@
 			 <label for="<?php echo $slug.custom_boilerplate_repeat_field_name_suffix($repeating); ?>"><?php echo $label; ?> </label>
          <div class="image-previews">
            <?php
-              if($field) {
+              if(is_array($field)) {
                 foreach($field as $image) {
                   $imgArray = wp_prepare_attachment_for_js($image); ?>
                 <div style="width:30%; height:auto; display:inline-block;">
@@ -116,19 +116,49 @@
   									alt="<?php echo $imgArray['alt']; ?>"
                     id="<?php echo $slug; ?>-<?php if ($image != '') echo $image ?>"
                   />
+
                   <input
                     value="<?php if ($image != '') echo $image ?>"
                     type="hidden"
-                    name="<?php echo $slug.custom_boilerplate_repeat_field_name_suffix($repeating); ?>"
+                    name="<?php echo $slug; ?>[]"
                     class="<?php echo $slug; ?>-<?php if ($image != '') echo $image ?>"
                   />
                   <a href="#delete-image">-</a>
                 </div>
                 <?php
                 }
+              }
+              else {
+                echo 'No images yet.';
               } ?>
          </div>
          <a href="#choose-media">Choose media</a>
+	 </div>
+	 <?php
+ }
+ function custom_boilerplate_field_select($field='', $class, $slug, $label, $placeholder=false, $repeating=false, $options, $selected) {
+    if($field) {
+      $selected=-1;
+    }
+	 ?>
+	 <div class="<?php echo $class; ?>">
+			 <label for="<?php echo $slug.custom_boilerplate_repeat_field_name_suffix($repeating); ?>"><?php echo $label; ?> </label>
+       <select name="<?php echo $slug.custom_boilerplate_repeat_field_name_suffix($repeating); ?>">
+         <?php
+         $i=0;
+         foreach ($options as $option) {
+           ?>
+           <option<?php
+            if($field && $field==$option) {
+              echo ' selected="selected"';
+            }
+            elseif($selected==$i) {
+              echo ' selected="selected"';
+            } ?>><?php echo $option ?></option>
+           <?php
+           $i++;
+         } ?>
+       </select>
 	 </div>
 	 <?php
  }
@@ -136,7 +166,7 @@
  /*
   * Display field wrappers and repeating handling.
   */
- function custom_boilerplate_field($type, $object, $slug, $label, $placeholder=false, $repeating=false)
+ function custom_boilerplate_field($type, $object, $slug, $label, $placeholder=false, $repeating=false, $options, $selected)
  {
 	 if($repeating) {
 		 $fields = get_post_meta($object->ID, $slug, true);
@@ -152,19 +182,19 @@
 					foreach ( $fields as $field ) {
 						$function = 'custom_boilerplate_field_'.$type;
 						if(function_exists($function)) {
-						  $function($field, $class, $slug, $label, $placeholder, $repeating);
+						  $function($field, $class, $slug, $label, $placeholder, $repeating, $options, $selected);
 						}
 					}
 				} else {
 					$function = 'custom_boilerplate_field_'.$type;
 					if(function_exists($function)) {
-						$function('', $class, $slug, $label, $placeholder, $repeating);
+						$function('', $class, $slug, $label, $placeholder, $repeating, $options, $selected);
 					}
 				}
 			} else {
 				$function = 'custom_boilerplate_field_'.$type;
 				if(function_exists($function)) {
-					$function(get_post_meta($object->ID, $slug, true), $class, $slug, $label, $placeholder, $repeating);
+					$function(get_post_meta($object->ID, $slug, true), $class, $slug, $label, $placeholder, $repeating, $options, $selected);
 				}
 			}
 		?>
@@ -182,9 +212,36 @@ function custom_boilerplate_metabox_display($object, $fields) {
 
 	wp_nonce_field($fields['id'], $fields['id']."-nonce");
 
+
+
 	foreach($fields['args'] as $field) {
-		custom_boilerplate_field($field['type'], $object, $field['slug'], $field['label'], $field['placeholder'], $field['repeating']);
+    $selected = '';
+    $options = '';
+    if(isset($field['options'])) {
+      $options = $field['options'];
+    }
+    if(isset($field['selected'])) {
+      $selected = $field['selected'];
+    }
+		custom_boilerplate_field($field['type'], $object, $field['slug'], $field['label'], $field['placeholder'], $field['repeating'], $options, $selected);
 	}
 
 
+}
+
+function custom_boilerplate_metabox_view_list($post_id, $field_name, $before='<span>', $after='</span>', $between=', ') {
+  $fields = get_post_meta($post_id, $field_name, true);
+  if(is_array($fields)) {
+    $i=0;
+    $output = '';
+    $prepend = '';
+    foreach($fields as $item) {
+      if($i>0){$prepend=$between;}
+      $output .= $prepend.$before.$item.$after;
+      $i++;
+    }
+    return $output;
+  } else {
+    return $before.$fields.$after;
+  }
 }

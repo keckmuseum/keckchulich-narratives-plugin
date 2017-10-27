@@ -12,6 +12,13 @@
  * @package         Custom_Boilerplate
  */
 require('post-types/item-post-type.php');
+require('taxonomies/document-type.php');
+require('taxonomies/provenance.php');
+require('taxonomies/company.php');
+require('taxonomies/collection.php');
+
+require('taxonomies/keyword.php');
+
 require('metaboxes/metabox-field-spec.php');
 require('metaboxes/metabox-display.php');
 require('metaboxes/metabox-update.php');
