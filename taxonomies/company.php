@@ -14,7 +14,7 @@ function custom_boilierplate_taxonomy_company() {
 		'edit_item'                  => __( 'Edit Item', 'company' ),
 		'update_item'                => __( 'Update Item', 'company' ),
 		'view_item'                  => __( 'View Item', 'company' ),
-		'separate_items_with_commas' => __( 'Separate items with commas', 'company' ),
+		'separate_items_with_commas' => __( 'Separate items with commas. For a company name with commas replace commas with -- for example: <br />CompanyName-- ltd.', 'company' ),
 		'add_or_remove_items'        => __( 'Add or remove items', 'company' ),
 		'choose_from_most_used'      => __( 'Choose from the most used', 'company' ),
 		'popular_items'              => __( 'Popular Items', 'company' ),

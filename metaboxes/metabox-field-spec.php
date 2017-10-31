@@ -110,8 +110,8 @@ $custom_boilerplate_first_metabox_field_spec = Array (
 	// 	'placeholder' => ''
 	// ),
 	14 => Array (
-		'slug' => 'notes',
-		'label' => 'Notes:',
+		'slug' => 'description',
+		'label' => 'Description:',
 		'type' => 'textarea',
 		'repeating' => false,
 		'placeholder' => ''
@@ -141,7 +141,14 @@ $custom_boilerplate_first_metabox_field_spec = Array (
 	// 		'Mining Bond'
 	// 	),
 	// 	'selected' => 0
-	// )
+	// ),
+	18 => Array (
+		'slug' => 'amount',
+		'label' => 'Bond Amount:',
+		'type' => 'text',
+		'repeating' => false,
+		'placeholder' => '100'
+	),
 );
 
 /*
