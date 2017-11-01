@@ -149,6 +149,13 @@ $custom_boilerplate_first_metabox_field_spec = Array (
 		'repeating' => false,
 		'placeholder' => '100'
 	),
+	19 => Array (
+		'slug' => 'notable-imagery',
+		'label' => 'Notable Bond Imagery:',
+		'type' => 'textarea',
+		'repeating' => false,
+		'placeholder' => ''
+	),
 );
 
 /*
