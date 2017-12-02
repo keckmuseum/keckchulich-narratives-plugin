@@ -205,14 +205,10 @@
 
  }
 
-
-
 function custom_boilerplate_metabox_display($object, $fields) {
   echo '<script type="text/javascript">custom_boilerplate_init("#'.$fields['id'].'");</script>';
 
 	wp_nonce_field($fields['id'], $fields['id']."-nonce");
-
-
 
 	foreach($fields['args'] as $field) {
     $selected = '';
@@ -243,5 +239,53 @@ function custom_boilerplate_metabox_view_list($post_id, $field_name, $before='<s
     return $output;
   } else {
     return $before.$fields.$after;
+  }
+}
+
+
+
+function custom_boilerplate_rest_get_post_meta( $object, $attr ) {
+    $post_id = $object['id'];
+     return get_post_meta( $post_id, $attr );
+}
+
+// function custom_boilerplate_update_post_meta( $object, $field_name, $request ) {
+//   return update_post_meta( $object[ 'id' ], $field_name, $value );
+// }
+
+function custom_boilerplate_rest_api_init() {
+  global $custom_boilerplate_metabox_spec;
+
+  foreach($custom_boilerplate_metabox_spec as $metabox) {
+    foreach($metabox['fields'] as $field ) {
+      register_rest_field( 'item-post-type',
+         $field['slug'],
+         array(
+            'get_callback'    => 'custom_boilerplate_rest_get_post_meta',
+            'update_callback' => null, // 'custom_boilerplate_update_post_meta',
+            'schema'          => null,
+         )
+      );
+    }
+  }
+}
+
+add_action( 'rest_api_init', 'custom_boilerplate_rest_api_init');
+
+
+function custom_boilerplate_taxonomy_selector($taxonomy, $firstItem=false) {
+  $terms = get_terms( array(
+      'taxonomy' => $taxonomy,
+      'hide_empty' => false,
+  ) );
+  if($terms && is_array($terms)) {
+    echo '<select id="'.$taxonomy.'">';
+    if($firstItem){
+      ?><option name="0"><?php echo $firstItem; ?></option>';<?php 
+    }
+    foreach($terms as $term) { ?>
+      <option name="<? echo $term->term_id ?>"><? echo $term->name ?></option>
+    <?php }
+    echo '</select>';
   }
 }

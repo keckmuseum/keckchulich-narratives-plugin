@@ -158,6 +158,30 @@ $custom_boilerplate_first_metabox_field_spec = Array (
 	),
 );
 
+$custom_boilerplate_theme_taxonomy_metabox_field_spec = Array (
+	0 => Array (
+		'slug' => 'featured',
+		'label' => 'Featured:',
+		'type' => 'checkbox',
+		'repeating' => false,
+		// 'placeholder' => date('Y').'.XXX.XXX'
+	),
+	1 => Array (
+		'slug' => 'button-title',
+		'label' => 'Button Title:',
+		'type' => 'text',
+		'repeating' => false,
+		// 'placeholder' => date('Y').'.XXX.XXX'
+	),
+	2 => Array (
+		'slug' => 'button-image',
+		'label' => 'Button Image:',
+		'type' => 'image',
+		'repeating' => false,
+		// 'placeholder' => date('Y').'.XXX.XXX'
+	),
+);
+
 /*
  * Metabox Specs Array
  */
@@ -169,5 +193,16 @@ $custom_boilerplate_first_metabox_field_spec = Array (
 		'fields' => $custom_boilerplate_first_metabox_field_spec,
 		'priority' => 'high',
 		'placement' => 'normal'
-	)
+		)
+	);
+
+	$custom_boilerplate_theme_taxonomy_metabox_spec = Array (
+  	0 => Array (
+ 		'slug' => 'item-details',
+ 		'title' => 'Taxonomy Details',
+ 		'taxonomy' => 'theme', // Should match the post type slug
+ 		'fields' => $custom_boilerplate_theme_taxonomy_metabox_field_spec,
+ 		'priority' => 'high',
+ 		'placement' => 'normal'
+ 	)
 );

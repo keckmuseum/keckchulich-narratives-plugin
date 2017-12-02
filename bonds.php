@@ -11,13 +11,16 @@
  *
  * @package         Custom_Boilerplate
  */
-require('post-types/item-post-type.php');
+
 require('taxonomies/theme.php');
 require('taxonomies/signature.php');
 require('taxonomies/company.php');
 require('taxonomies/collection.php');
-
 require('taxonomies/keyword.php');
+require('taxonomies/date-range.php');
+require('taxonomies/region.php');
+
+require('post-types/item-post-type.php');
 
 require('metaboxes/metabox-field-spec.php');
 require('metaboxes/metabox-display.php');

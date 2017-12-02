@@ -32,6 +32,8 @@ function custom_boilierplate_taxonomy_company() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'show_in_rest'       => true,
+		// 'rest_base'          => 'bond-companies',
 	);
 	register_taxonomy( 'company', array( 'item-post-type' ), $args );
 
@@ -54,7 +56,7 @@ if(!is_admin()){ // make sure the filters are only called in the frontend
 		}
 		return $tag_arr_new;
 	}
-	add_filter('get_'.$custom_taxonomy_type, comma_taxonomy_filter);
+	add_filter('get_'.$custom_taxonomy_type, 'comma_taxonomy_filter');
 
 	function comma_taxonomies_filter($tags_arr){
 		$tags_arr_new = array();
@@ -63,7 +65,7 @@ if(!is_admin()){ // make sure the filters are only called in the frontend
 		}
 		return $tags_arr_new;
 	}
-	add_filter('get_the_taxonomies',	comma_taxonomies_filter);
-	add_filter('get_terms', 			comma_taxonomies_filter);
-	add_filter('get_the_terms',			comma_taxonomies_filter);
+	add_filter('get_the_taxonomies',	'comma_taxonomies_filter');
+	add_filter('get_terms', 			'comma_taxonomies_filter');
+	add_filter('get_the_terms',			'comma_taxonomies_filter');
 }

@@ -1,6 +1,6 @@
 <?php
 // Register Custom Taxonomy
-function custom_boilierplate_taxonomy_document_type() {
+function custom_boilierplate_taxonomy_theme() {
 
 	$labels = array(
 		'name'                       => _x( 'Themes', 'Taxonomy General Name', 'theme' ),
@@ -32,8 +32,90 @@ function custom_boilierplate_taxonomy_document_type() {
 		'show_admin_column'          => true,
 		'show_in_nav_menus'          => true,
 		'show_tagcloud'              => true,
+		'rewrite'           => array('slug' => 'bonds/theme','with_front' => false),
+		'show_in_rest'       => true,
+		// 'rest_base'          => 'bond-themes',
 	);
 	register_taxonomy( 'theme', array( 'item-post-type' ), $args );
 
 }
-add_action( 'init', 'custom_boilierplate_taxonomy_document_type', 0 );
+add_action( 'init', 'custom_boilierplate_taxonomy_theme', 0 );
+
+
+add_action( 'theme_add_form_fields', 'custom_boilerplate_add_form_fields', 10, 2 );
+function custom_boilerplate_add_form_fields($taxonomy) {
+    ?><div class="form-field term-group">
+        <label for="theme-featured">Featured:</label>
+        <input type="checkbox" id="theme-featured" name="theme-featured" />
+    </div>
+		<div class="form-field term-group">
+        <label for="theme-button-label">Button Label:</label>
+        <input type="text" id="theme-button-label" name="theme-button-label" />
+    </div>
+		<div class="form-field term-group">
+        <label for="theme-button-image">Button Image:</label>
+        <input type="text" id="theme-button-image" name="theme-button-image" />
+    </div>
+ 	 </div><?php
+}
+
+add_action( 'created_theme', 'custom_boilerplate_save_taxonomy_meta', 10, 2 );
+
+function custom_boilerplate_save_taxonomy_meta( $term_id, $tt_id ){
+    if( isset( $_POST['theme-featured'] ) && '' !== $_POST['theme-featured'] ){
+        $group = sanitize_title( $_POST['theme-featured'] );
+        add_term_meta( $term_id, 'theme-featured', $group, true );
+    }
+		if( isset( $_POST['theme-button-label'] ) && '' !== $_POST['theme-button-label'] ){
+        $group = sanitize_text_field( $_POST['theme-button-label'] );
+        add_term_meta( $term_id, 'theme-button-label', $group, true );
+    }
+		if( isset( $_POST['theme-button-image'] ) && '' !== $_POST['theme-button-image'] ){
+        $group = sanitize_file_name( $_POST['theme-button-image'] );
+        add_term_meta( $term_id, 'theme-button-image', $group, true );
+    }
+}
+
+add_action( 'theme_edit_form_fields', 'custom_boilerplate_edit_taxonomy_meta', 10, 2 );
+
+function custom_boilerplate_edit_taxonomy_meta( $term, $taxonomy ){
+
+    ?><div class="form-field term-group">
+        <label for="theme-featured">Featured:</label>
+        <input type="checkbox" id="theme-featured" name="theme-featured" <?php // print_r(get_term_meta($term->term_taxonomy_id)); echo get_term_meta($term->term_taxonomy_id, 0)
+				//if ($field != false) echo ' checked="checked"'?><?php // checked( get_term_meta( $term->term_taxonomy_id,'theme-featured') ); ?> />
+	    </div>
+			<div class="form-field term-group">
+	        <label for="theme-button-label">Button Label:</label>
+	        <input type="text" id="theme-button-label" name="theme-button-label" />
+	    </div>
+			<div class="form-field term-group">
+	        <label for="theme-button-image">Button Image:</label>
+	        <input type="text" id="theme-button-image" name="theme-button-image" />
+	    </div>
+		<?php
+}
+
+add_action( 'edited_theme', 'custom_boilerplate_update_taxonomy', 10, 2 );
+
+function custom_boilerplate_update_taxonomy( $term_id, $tt_id ){
+
+    if( isset( $_POST['theme-featured'] ) && '' !== $_POST['theme-featured'] ){
+        $group = sanitize_title( $_POST['theme-featured'] );
+        update_term_meta( $term_id, 'theme-featured', $group );
+    } else {
+			delete_term_meta( $term_id, 'theme-featured' );
+		}
+		if( isset( $_POST['theme-button-label'] ) && '' !== $_POST['theme-button-label'] ){
+        $group = sanitize_text_field( $_POST['theme-button-label'] );
+        update_term_meta( $term_id, 'theme-button-label', $group );
+    } else {
+			delete_term_meta( $term_id, 'theme-button-label' );
+		}
+		if( isset( $_POST['theme-button-image'] ) && '' !== $_POST['theme-button-image'] ){
+        $group = $_POST['theme-button-image'];
+        update_term_meta( $term_id, 'theme-button-image', $group );
+    } else {
+			delete_term_meta( $term_id, 'theme-button-image' );
+		}
+}
