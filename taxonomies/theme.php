@@ -43,7 +43,7 @@ add_action( 'init', 'custom_boilierplate_taxonomy_theme', 0 );
 
 
 add_action( 'theme_add_form_fields', 'custom_boilerplate_add_form_fields', 10, 2 );
-function custom_boilerplate_add_form_fields($taxonomy) {
+function custom_boilerplate_add_form_fields($term_id) {
     ?><div class="form-field term-group">
         <label for="theme-featured">Featured:</label>
         <input type="checkbox" id="theme-featured" name="theme-featured" />
@@ -53,7 +53,7 @@ function custom_boilerplate_add_form_fields($taxonomy) {
         <input type="text" id="theme-button-label" name="theme-button-label" />
     </div>
 		<div class="form-field term-group">
-        <label for="theme-button-image">Button Image:</label>
+        <label for="theme-button-image">Button Image1:</label>
         <input type="text" id="theme-button-image" name="theme-button-image" />
     </div>
  	 </div><?php
@@ -82,16 +82,41 @@ function custom_boilerplate_edit_taxonomy_meta( $term, $taxonomy ){
 
     ?><div class="form-field term-group">
         <label for="theme-featured">Featured:</label>
-        <input type="checkbox" id="theme-featured" name="theme-featured" <?php // print_r(get_term_meta($term->term_taxonomy_id)); echo get_term_meta($term->term_taxonomy_id, 0)
-				//if ($field != false) echo ' checked="checked"'?><?php // checked( get_term_meta( $term->term_taxonomy_id,'theme-featured') ); ?> />
+        <input type="checkbox" id="theme-featured" name="theme-featured"<?php echo (get_term_meta( $term->term_taxonomy_id,'theme-featured')[0])? ' checked="checked"' : '' ; ?> />
 	    </div>
 			<div class="form-field term-group">
 	        <label for="theme-button-label">Button Label:</label>
-	        <input type="text" id="theme-button-label" name="theme-button-label" />
+	        <input type="text" id="theme-button-label" name="theme-button-label" value="<?php echo (get_term_meta( $term->term_taxonomy_id,'theme-button-label')[0])? get_term_meta( $term->term_taxonomy_id,'theme-button-label')[0] : '' ; ?>" />
 	    </div>
 			<div class="form-field term-group">
 	        <label for="theme-button-image">Button Image:</label>
-	        <input type="text" id="theme-button-image" name="theme-button-image" />
+					<?php if(get_term_meta( $term->term_taxonomy_id,'theme-button-image')) { ?>
+	          <img src="<?php echo get_term_meta( $term->term_taxonomy_id,'theme-button-image')[0]; ?>" alt="" />
+	        <?php } else {
+						echo 'nope';
+					}?>
+	        <input type="text" id="theme-button-image" name="theme-button-image" value="<?php echo (get_term_meta( $term->term_taxonomy_id,'theme-button-image')[0])? get_term_meta( $term->term_taxonomy_id,'theme-button-image')[0] : '' ; ?>" />
+
+					<?php
+					// if($image = get_term_meta( $term->term_taxonomy_id,'theme-button-image')[0]) {
+					// 	$imgArray = wp_prepare_attachment_for_js($image); ?>
+						<!-- <div style="width:30%; height:auto; display:inline-block;" class="image-chooser">
+							<img
+								style="width:100%; height:auto;"
+								src="<?php // echo $imgArray['url']; ?>"
+								alt="<?php // echo $imgArray['alt']; ?>"
+								id="theme-button-image-img"
+							/>
+
+							<input
+								value="<?php // if ($image != '') echo $image ?>"
+								type="hidden"
+								id="theme-button-image"
+								name="theme-button-image"
+							/>
+						</div> -->
+					<? // } ?>
+					<!-- <a href="#choose-media">Choose image</a> -->
 	    </div>
 		<?php
 }
